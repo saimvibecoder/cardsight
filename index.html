@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Type your credit card name to see its current offers, benefits and the upgrade worth considering. Covers 27 Indian credit cards.">
+<title>Cardsight</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,wght@1,500&display=swap">
+<style>
+/* Layout: white paper, left-aligned two-column hero with the card as the one colourful object; sections alternate white, ink and blue. */
+:root{
+  --blue:#5196fe; --blue-ink:#2a6bd8; --blue-soft:#e8f1ff; --orange:#f9754e; --coral:#ff9d8c;
+  --ink:#1b1d20; --paper:#ffffff; --parchment:#f2f1ec; --sand:#e1dfd8; --steel:#6e6e6e; --fog:#a3a3a3; --graphite:#27272a;
+  --on-dark:#ffffff; --on-dark-muted:rgba(255,255,255,.66);
+  --sans:"Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --serif:"Newsreader", "Source Serif 4", Georgia, serif;
+  --r-card:24px; --r-input:12.8px; --shadow:rgba(0,0,0,.1) 0 2px 10px 0;
+}
+*{box-sizing:border-box}
+body{margin:0}[hidden]{display:none!important}img{max-width:100%}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;letter-spacing:-.02em;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1232px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+h1,h2,h3,p,dl,dd{margin:0}
+h1,h2,h3{font-weight:600;text-wrap:balance}
+button{font:inherit;color:inherit;letter-spacing:inherit;cursor:pointer}
+a{color:var(--blue-ink)}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.muted{color:var(--steel)}
+.num{font-variant-numeric:tabular-nums}
+
+.bar{background:var(--blue);color:var(--on-dark);font-size:14px;font-weight:500;text-align:center}
+.bar .wrap{padding-block:12px}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-block:20px}
+.brand{font-size:20px;font-weight:500}
+nav{display:flex;gap:28px}
+nav button{border:0;background:none;padding:0;font-weight:500;color:var(--steel)}
+nav button:hover{color:var(--ink)}
+.pill{border-radius:9999px;padding:16px 24px;font-weight:500;border:1px solid transparent;transition:background-color .15s ease-out,border-color .15s ease-out,transform .1s ease-out}
+.pill:active{transform:scale(.98)}
+.ghost{border-color:var(--ink);background:none;padding:12px 20px}
+.ghost:hover{background:var(--parchment)}
+.ember{background:var(--orange);color:var(--on-dark);font-weight:600}
+.ember:hover{background:#f0653c}
+
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:48px;align-items:center;padding-block:48px 80px}
+.copy{display:flex;flex-direction:column;align-items:flex-start;gap:24px}
+.tagline{background:var(--ink);color:var(--on-dark);border-radius:var(--r-input);padding:8px 12px;font-size:14px;font-weight:500}
+h1{font-size:clamp(40px,5.2vw,64px);line-height:1.05;letter-spacing:-.06em}
+h1 em{font-family:var(--serif);font-style:italic;font-weight:500;letter-spacing:-.05em}
+.sub{font-size:18px;line-height:1.43;color:var(--steel);max-width:48ch}
+.search{position:relative;display:flex;flex-wrap:wrap;gap:12px;width:100%;max-width:520px}
+.search input{flex:1 1 220px;min-width:0;font:inherit;letter-spacing:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--fog);border-radius:var(--r-input);padding:16px}
+.search input::placeholder{color:var(--fog)}
+.search input:focus{outline:0;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+.suggest{position:absolute;left:0;right:0;top:calc(100% + 8px);background:var(--paper);border:1px solid var(--sand);border-radius:var(--r-input);box-shadow:var(--shadow);padding:4px;z-index:5;max-height:296px;overflow:auto}
+.suggest button{display:flex;justify-content:space-between;gap:12px;width:100%;border:0;background:none;padding:12px;border-radius:8px;text-align:left}
+.suggest button:hover,.suggest button.on{background:var(--parchment)}
+.suggest span{color:var(--steel);font-size:14px;white-space:nowrap}
+.suggest .none{padding:12px;color:var(--steel);font-size:14px}
+.try{font-size:14px;color:var(--steel);display:flex;flex-wrap:wrap;gap:4px 16px}
+.try button{border:0;background:none;padding:0;color:var(--blue-ink);font-weight:500}
+.try button:hover{text-decoration:underline}
+.stage{background:var(--blue-soft);border-radius:var(--r-card);padding:40px;display:grid;gap:24px}
+/* Card art: each bank gets its own colours and pattern, each card can override them, and super-premium cards get a brushed-metal finish. */
+.plastic{--c1:#1b1d20;--c2:#3a3d42;--acc:#f9754e;--cink:#ffffff;aspect-ratio:1.586;max-width:100%;border-radius:20px;padding:22px 24px;display:flex;flex-direction:column;justify-content:space-between;gap:12px;color:var(--cink);position:relative;overflow:hidden;isolation:isolate;
+  background:linear-gradient(135deg,var(--c1) 0%,var(--c2) 100%);box-shadow:0 24px 48px -20px rgba(27,29,32,.55),inset 0 1px 0 rgba(255,255,255,.18)}
+.plastic>*{position:relative;z-index:2}
+.stage{container-type:inline-size}
+.plastic{padding:clamp(14px,6cqi,24px)}
+.plastic::before,.plastic::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1}
+.plastic::after{background:linear-gradient(115deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,0) 38%,rgba(255,255,255,0) 70%,rgba(255,255,255,.08) 100%)}
+.plastic[data-p="stripe"]::before{background:linear-gradient(118deg,transparent 0 52%,var(--acc) 52% 58%,transparent 58% 62%,color-mix(in srgb,var(--acc) 55%,transparent) 62% 64%,transparent 64%)}
+.plastic[data-p="rings"]::before{background:radial-gradient(circle at 92% 108%,transparent 0 22%,rgba(255,255,255,.14) 22% 23%,transparent 23% 34%,rgba(255,255,255,.12) 34% 35%,transparent 35% 46%,rgba(255,255,255,.1) 46% 47%,transparent 47% 58%,rgba(255,255,255,.08) 58% 59%,transparent 59%)}
+.plastic[data-p="arc"]::before{background:radial-gradient(circle at 110% -10%,var(--acc) 0 38%,transparent 38.5%),radial-gradient(circle at 110% -10%,transparent 0 46%,rgba(255,255,255,.16) 46% 47%,transparent 47.5%)}
+.plastic[data-p="chevron"]::before{background:linear-gradient(135deg,transparent 0 60%,rgba(255,255,255,.12) 60% 61%,transparent 61%),linear-gradient(45deg,transparent 0 30%,rgba(255,255,255,.08) 30% 31%,transparent 31%),linear-gradient(160deg,transparent 0 70%,color-mix(in srgb,var(--acc) 70%,transparent) 70%)}
+.plastic[data-p="lines"]::before{background:repeating-linear-gradient(0deg,rgba(255,255,255,.07) 0 1px,transparent 1px 7px),radial-gradient(ellipse at 85% 50%,rgba(255,255,255,.22),transparent 60%)}
+.plastic[data-p="wave"]::before{background:radial-gradient(120% 60% at 0% 120%,var(--acc) 0 40%,transparent 41%),radial-gradient(140% 70% at 0% 125%,transparent 0 46%,rgba(255,255,255,.18) 46% 47%,transparent 48%)}
+.plastic[data-p="hex"]::before{background:conic-gradient(from 45deg at 80% 50%,rgba(255,255,255,.18) 0 25%,transparent 0 50%,rgba(0,0,0,.18) 0 75%,transparent 0)}
+.plastic[data-p="dots"]::before{background:radial-gradient(rgba(255,255,255,.16) 1.2px,transparent 1.6px) 0 0/12px 12px;-webkit-mask-image:linear-gradient(110deg,transparent 35%,#000 80%);mask-image:linear-gradient(110deg,transparent 35%,#000 80%)}
+.plastic[data-p="band"]::before{background:linear-gradient(180deg,transparent 0 64%,var(--acc) 64% 70%,transparent 70%)}
+.plastic.metal{box-shadow:0 26px 50px -18px rgba(0,0,0,.6),inset 0 0 0 1px rgba(255,255,255,.14),inset 0 1px 0 rgba(255,255,255,.3)}
+.plastic.metal::after{background:repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 1px,transparent 1px 3px),linear-gradient(115deg,rgba(255,255,255,.28) 0%,rgba(255,255,255,0) 34%,rgba(255,255,255,0) 66%,rgba(255,255,255,.14) 100%)}
+.plastic .row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.plastic .bk{font-weight:700;letter-spacing:.01em;font-size:15px;text-transform:uppercase}
+.plastic .tierlbl{font-size:12px;font-weight:500;opacity:.8;letter-spacing:.02em;white-space:nowrap}
+.plastic .mid{display:flex;align-items:center;gap:12px}
+.plastic .chipset{width:42px;height:30px;border-radius:6px;background:linear-gradient(135deg,#efdfae,#b8964f);box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)}
+.plastic .chipset{background-image:linear-gradient(90deg,transparent 30%,rgba(0,0,0,.18) 30% 32%,transparent 32% 68%,rgba(0,0,0,.18) 68% 70%,transparent 70%),linear-gradient(0deg,transparent 45%,rgba(0,0,0,.18) 45% 55%,transparent 55%),linear-gradient(135deg,#efdfae,#b8964f)}
+.plastic .nfc{width:22px;height:22px;opacity:.85}
+.plastic .nm{font-size:clamp(15px,7cqi,28px);font-weight:600;letter-spacing:-.03em;line-height:1.1;text-shadow:0 1px 8px rgba(0,0,0,.25);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.plastic .dots{font-size:14px;letter-spacing:.18em;opacity:.75;font-variant-numeric:tabular-nums}
+.plastic.swap{animation:swap .5s cubic-bezier(.2,.7,.2,1)}
+@keyframes swap{from{opacity:0;transform:perspective(900px) rotateY(-14deg) translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.plastic.swap{animation:none}}
+.lines{display:grid;gap:8px;font-size:14px}
+.lines div{display:flex;justify-content:space-between;gap:16px}
+.lines b{font-weight:500;text-align:right}
+.rise{animation:rise .5s cubic-bezier(.2,.7,.2,1) both}
+.r1{animation-delay:.06s}.r2{animation-delay:.12s}.r3{animation-delay:.18s}.r4{animation-delay:.24s}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.rise{animation:none}}
+
+.result{background:var(--parchment);border-radius:var(--r-card);padding:32px;display:grid;gap:32px;scroll-margin-top:24px}
+.eg{font-size:14px;color:var(--steel)}
+.rhead h2{font-size:clamp(28px,3.4vw,40px);line-height:1.13;letter-spacing:-.04em}
+.rhead p{font-size:18px;color:var(--steel);margin-top:8px;max-width:56ch}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.badge{border-radius:var(--r-input);padding:4px 12px;font-size:14px;font-weight:500;background:var(--ink);color:var(--on-dark)}
+.badge.line{background:none;color:var(--ink);border:1px solid var(--ink);padding:3px 11px}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.fact{padding:0 24px;border-left:1px solid var(--sand);min-width:0}
+.fact:first-child{padding-left:0;border-left:0}
+.fact dt{font-size:14px;color:var(--steel)}
+.fact dd{font-size:20px;font-weight:600;letter-spacing:-.023em;line-height:1.3;margin-top:4px;font-variant-numeric:tabular-nums}
+.changed{background:var(--paper);border:1px solid var(--sand);border-radius:var(--r-input);padding:16px}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:48px}
+h3{font-size:20px;line-height:1.42;letter-spacing:-.023em;margin-bottom:12px}
+.list{list-style:none;margin:0;padding:0}
+.list li{padding:12px 0;border-top:1px solid var(--sand)}
+.offer{display:flex;justify-content:space-between;gap:16px;align-items:baseline;padding:12px 0;border-top:1px solid var(--sand)}
+.offer span{flex:none;font-size:14px;color:var(--steel);font-variant-numeric:tabular-nums;white-space:nowrap}
+.small{font-size:14px;color:var(--steel);margin-top:12px}
+.live{display:inline-block;margin-top:12px;font-weight:500}
+.ups{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.up{background:var(--paper);border:1px solid transparent;border-radius:var(--r-card);padding:24px;text-align:left;display:grid;gap:8px;align-content:start}
+button.up{transition:border-color .15s ease-out}
+button.up:hover{border-color:var(--blue)}
+.up strong{font-size:18px;font-weight:600}
+.up p{color:var(--steel)}
+.up i{font-style:normal;font-weight:500;color:var(--blue-ink)}
+.foot{font-size:14px;color:var(--steel);border-top:1px solid var(--sand);padding-top:16px}
+
+.stats .wrap{padding-block:80px}
+.statrow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.stat{padding:0 32px;border-left:1px solid var(--sand)}
+.stat:first-child{padding-left:0;border-left:0}
+.stat b{display:block;font-size:clamp(40px,5vw,64px);font-weight:700;line-height:1.05;letter-spacing:-.06em;font-variant-numeric:tabular-nums}
+.stat span{display:block;font-size:14px;color:var(--steel);margin-top:8px}
+
+.dark{background:var(--ink);color:var(--on-dark)}
+.dark .wrap{padding-block:80px}
+.sec{font-size:clamp(32px,4vw,48px);line-height:1.13;letter-spacing:-.06em;max-width:20ch;margin-bottom:48px}
+.how{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.how div{border:1px solid var(--graphite);border-radius:var(--r-card);padding:24px}
+.how p{color:var(--on-dark-muted)}
+
+.blue{background:var(--blue);color:var(--on-dark)}
+.blue .wrap{padding-block:80px}
+.blue .sec{margin-bottom:16px}
+.blue .lead{font-size:18px;margin-bottom:40px;max-width:52ch}
+.banks{columns:3 300px;column-gap:16px}
+.bank{break-inside:avoid;background:var(--paper);color:var(--ink);border-radius:var(--r-card);padding:24px;margin-bottom:16px}
+.bank h3{margin-bottom:8px}
+.bank button{display:flex;justify-content:space-between;gap:16px;width:100%;border:0;border-top:1px solid var(--sand);background:none;padding:12px 0;text-align:left;font-weight:500}
+.bank button:hover{color:var(--blue-ink)}
+.bank button span{font-weight:400;color:var(--steel);font-size:14px;font-variant-numeric:tabular-nums;text-align:right}
+
+footer .wrap{padding-block:48px}
+footer p{font-size:14px;color:var(--steel);max-width:76ch}
+footer strong{color:var(--ink);font-weight:600}
+
+@media (max-width:860px){
+  nav{display:none}
+  .hero .wrap{grid-template-columns:minmax(0,1fr);gap:40px;padding-block:24px 64px}
+  .stage{padding:24px}
+  .result{padding:24px}
+  .facts,.statrow{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:24px}
+  .fact:nth-child(odd),.stat:nth-child(odd){padding-left:0;border-left:0}
+  .fact,.stat{padding-right:0}
+  .stat{padding-left:24px}
+  .cols,.how{grid-template-columns:minmax(0,1fr)}
+  .cols{gap:32px}
+  .stats .wrap,.dark .wrap,.blue .wrap{padding-block:64px}
+}
+</style>
+</head>
+<body>
+
+<div class="bar"><div class="wrap" id="bar"></div></div>
+<header><div class="wrap">
+  <span class="brand">Cardsight</span>
+  <nav aria-label="Sections"><button type="button" data-go="result">Your card</button><button type="button" data-go="how">How it works</button><button type="button" data-go="cards">All cards</button></nav>
+  <button class="pill ghost" type="button" data-go="cards">Browse cards</button>
+</div></header>
+
+<div class="hero"><div class="wrap">
+  <div class="copy">
+    <span class="tagline rise" id="tagline"></span>
+    <h1 class="rise r1">Know what your credit card <em>really</em> gives you</h1>
+    <p class="sub rise r2">Type the name of your card. See the offers running on it, the benefits you already pay for, and the upgrade worth asking your bank about.</p>
+    <form class="search rise r3" id="form" autocomplete="off">
+      <input id="q" type="text" placeholder="HDFC Regalia Gold" aria-label="Credit card name">
+      <button class="pill ember" type="submit">Check card</button>
+      <div class="suggest" id="suggest" hidden></div>
+    </form>
+    <p class="try rise r4"><span>Try</span><span id="popular" style="display:contents"></span></p>
+    <p class="small rise r4" style="margin-top:0">Card name only. Cardsight never asks for your card number, CVV or OTP.</p>
+  </div>
+  <div class="stage rise r2" id="stage"></div>
+</div></div>
+
+<div class="wrap"><div class="result" id="result"></div></div>
+
+<div class="stats"><div class="wrap"><div class="statrow" id="stats"></div></div></div>
+
+<section class="dark" id="how"><div class="wrap">
+  <h2 class="sec">Card terms change quietly. Cardsight keeps track</h2>
+  <div class="how">
+    <div><h3>Name your card</h3><p>Search by bank or card name. There is no login, and nothing about you or your account is collected.</p></div>
+    <div><h3>See what it gives you</h3><p>Fees, the spend that waives them, lounge access, reward rates and the bank offers running now, each with its end date.</p></div>
+    <div><h3>Find the next card up</h3><p>Every card shows the upgrade path inside the same bank, with what you would gain and what it costs.</p></div>
+  </div>
+</div></section>
+
+<section class="blue" id="cards"><div class="wrap">
+  <h2 class="sec">Every card in the database</h2>
+  <p class="lead">Pick a card to open it. Fees shown are annual and exclude GST.</p>
+  <div class="banks" id="banks"></div>
+</div></section>
+
+<footer><div class="wrap">
+  <p><strong>Please verify before you spend.</strong> Card terms and bank offers change often, sometimes without notice. This data is re-checked once a week, so some details may be out of date. Confirm fees, caps and offer terms on your bank's website or app before relying on them. Cardsight is an independent information tool. It is not affiliated with any bank and does not give financial advice.</p>
+</div></footer>
+
+<script src="data.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const byId = Object.fromEntries(CARDS.map(c => [c.id, c]));
+const full = c => c.name.includes(c.bank) ? c.name : c.bank + " " + c.name;
+const norm = s => s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+const free = c => c.fee === "Lifetime free";
+
+function find(q){
+  const words = norm(q).split(" ").filter(Boolean);
+  if(!words.length) return [];
+  return CARDS.map(c => {
+    const hay = norm(c.bank + " " + c.name);
+    const hits = words.filter(w => hay.includes(w)).length;
+    return {c, hits, pre: hay.startsWith(words[0]) ? 1 : 0};
+  }).filter(x => x.hits === words.length || (words.length > 1 && x.hits >= words.length - 1))
+    .sort((a,b) => b.hits - a.hits || b.pre - a.pre).map(x => x.c);
+}
+
+// Card art. Colours suggest each bank's palette; no logos are used.
+const BANK_ART = {
+  "HDFC":      {c1:"#0a2463", c2:"#1e4fa3", acc:"#e1262d", p:"stripe"},
+  "SBI":       {c1:"#123c8c", c2:"#5b2a8c", acc:"#2bb3e6", p:"rings"},
+  "ICICI":     {c1:"#6e1214", c2:"#b5361e", acc:"#f37021", p:"arc"},
+  "Axis":      {c1:"#5e0d2b", c2:"#97144d", acc:"#e8b4c8", p:"chevron"},
+  "Amex":      {c1:"#0e4a6b", c2:"#2c7fa8", acc:"#9fd3ea", p:"lines"},
+  "IDFC FIRST":{c1:"#4a0d17", c2:"#9c1d2e", acc:"#e8a33d", p:"wave"},
+  "HSBC":      {c1:"#b0000f", c2:"#e3001b", acc:"#ffffff", p:"hex"},
+  "IndusInd":  {c1:"#5a2412", c2:"#97321f", acc:"#d9a066", p:"dots"}
+};
+const CARD_ART = {
+  "hdfc-swiggy":      {c1:"#e2620c", c2:"#ff8a2b", acc:"#3d1d00", p:"band"},
+  "hdfc-tata-neu":    {c1:"#2e1452", c2:"#6a3aa6", acc:"#ff6fae", p:"rings"},
+  "hdfc-regalia-gold":{c1:"#3a2a0d", c2:"#9a7a35", acc:"#f4d98a", p:"stripe"},
+  "hdfc-dcb":         {c1:"#0b0b0c", c2:"#2c2d31", acc:"#c9cbd1", p:"lines", metal:true},
+  "hdfc-infinia":     {c1:"#060607", c2:"#26272b", acc:"#7d8590", p:"lines", metal:true},
+  "sbi-cashback":     {c1:"#0d6e6e", c2:"#1fa38f", acc:"#c8f2e3", p:"rings"},
+  "sbi-elite":        {c1:"#141414", c2:"#3b3324", acc:"#d6b46a", p:"rings"},
+  "icici-amazon":     {c1:"#161d27", c2:"#2c3a4c", acc:"#ff9900", p:"band"},
+  "icici-sapphiro":   {c1:"#0f2a5a", c2:"#2c5aa8", acc:"#a9c8ff", p:"arc"},
+  "icici-epm":        {c1:"#06261d", c2:"#0f5a43", acc:"#cfe9dc", p:"lines", metal:true},
+  "axis-flipkart":    {c1:"#1d5fd6", c2:"#2874f0", acc:"#ffe11b", p:"band"},
+  "axis-atlas":       {c1:"#0d2b4a", c2:"#1f5f7a", acc:"#d7c08a", p:"chevron"},
+  "axis-magnus":      {c1:"#2a0614", c2:"#5e0d2b", acc:"#d8b7c4", p:"chevron", metal:true},
+  "amex-plat-travel": {c1:"#5c6670", c2:"#aeb7bf", acc:"#e9eef2", p:"lines", metal:true},
+  "amex-reserve":     {c1:"#2a3036", c2:"#6f7b86", acc:"#d7dee4", p:"lines", metal:true},
+  "idfc-wealth":      {c1:"#121212", c2:"#3a1f24", acc:"#c9a46a", p:"wave"},
+  "indusind-tiger":   {c1:"#1a1a1a", c2:"#c2541b", acc:"#f4a340", p:"dots"}
+};
+const NFC = `<svg class="nfc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M8 7.5a6 6 0 0 1 0 9M11.5 5a9.5 9.5 0 0 1 0 14M15 2.8a12.5 12.5 0 0 1 0 18.4"/></svg>`;
+function stage(c){
+  const a = Object.assign({}, BANK_ART[c.bank] || {}, CARD_ART[c.id] || {});
+  const metal = a.metal || c.tier === "Super-premium";
+  $("stage").innerHTML = `
+    <div class="plastic swap${metal ? " metal" : ""}" data-p="${a.p || "lines"}" style="--c1:${a.c1};--c2:${a.c2};--acc:${a.acc}" role="img" aria-label="Illustration of the ${full(c)} card">
+      <div class="row"><span class="bk">${c.bank}</span><span class="tierlbl">${metal ? "Metal" : c.tier}</span></div>
+      <div class="mid"><div class="chipset"></div>${NFC}</div>
+      <div><div class="nm">${c.name}</div></div></div>
+    <div class="lines"><div><span class="muted">Annual fee</span><b class="num">${c.fee}</b></div>
+      <div><span class="muted">Lounge access</span><b>${c.lounge}</b></div></div>`;
+}
+
+function render(c, isExample){
+  const offers = OFFERS[c.bank];
+  const live = "https://www.google.com/search?q=" + encodeURIComponent(full(c) + " credit card offers official site");
+  const ups = c.u.length ? c.u.map(([n,why,id]) => {
+    const inner = `<strong>${n}</strong><p>${why}</p>` + (id ? `<i>Open this card</i>` : ``);
+    return id ? `<button class="up" type="button" data-id="${id}">${inner}</button>` : `<div class="up">${inner}</div>`;
+  }).join("") : `<div class="up"><strong>You are at the top</strong><p>There is no higher card in this bank's range. Focus on using its benefits fully.</p></div>`;
+  $("result").innerHTML = `
+    <div class="rhead">${isExample ? `<p class="eg" style="font-size:14px;margin:0 0 8px">Example result. Search for your own card above</p>` : ``}
+      <h2>${full(c)}</h2><p>${c.for}</p>
+      <div class="badges"><span class="badge">${c.tier}</span>${free(c) ? `<span class="badge line">No annual fee</span>` : ``}${c.change ? `<span class="badge line">Changed recently</span>` : ``}</div></div>
+    <dl class="facts">
+      <div class="fact"><dt>Annual fee</dt><dd>${c.fee}${free(c) ? "" : " + GST"}</dd></div>
+      <div class="fact"><dt>Fee waived at</dt><dd>${c.waiver}</dd></div>
+      <div class="fact"><dt>Lounge access</dt><dd>${c.lounge}</dd></div>
+      <div class="fact"><dt>Forex markup</dt><dd>${c.forex}</dd></div>
+    </dl>
+    ${c.change ? `<div class="changed"><strong>Recent change</strong><br>${c.change}</div>` : ``}
+    <div class="cols">
+      <div><h3>What you already get</h3><ul class="list">${c.perks.map(p => `<li>${p}</li>`).join("")}</ul></div>
+      <div><h3>Offers running now</h3>
+        ${offers ? offers.map(([t,v]) => `<div class="offer"><div>${t}</div><span>${v}</span></div>`).join("") + `<p class="small">These are ${c.bank} bank-wide credit card offers. Some exclude co-branded cards or need an EMI purchase.</p>`
+                 : `<p class="small" style="margin-top:0">No verified ${c.bank} offers in this week's check. Use the link below for what is live today.</p>`}
+        <a class="live" href="${live}" target="_blank" rel="noopener">Check live ${c.bank} offers</a>
+      </div>
+    </div>
+    <div><h3>Upgrades worth considering</h3><div class="ups">${ups}</div></div>
+    <p class="foot">Last verified ${VERIFIED}. Details are re-checked weekly and may have changed since. Confirm with ${c.bank} before you rely on them.</p>`;
+  stage(c);
+}
+
+const smooth = () => matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+function open(id){
+  const c = byId[id]; if(!c) return;
+  render(c, false);
+  $("q").value = full(c); $("suggest").hidden = true;
+  $("result").scrollIntoView({behavior: smooth(), block: "start"});
+}
+
+function suggest(){
+  const q = $("q").value, box = $("suggest");
+  if(!norm(q)){ box.hidden = true; return; }
+  const list = find(q).slice(0,7);
+  box.innerHTML = list.length ? list.map((c,i) => `<button type="button" data-id="${c.id}" class="${i ? "" : "on"}">${full(c)}<span>${c.fee}</span></button>`).join("")
+    : `<div class="none">That card is not in the database yet. Try the bank name, or browse all cards below.</div>`;
+  box.hidden = false;
+}
+
+$("q").addEventListener("input", suggest);
+$("q").addEventListener("focus", suggest);
+$("form").addEventListener("submit", e => { e.preventDefault(); const m = find($("q").value)[0]; if(m) open(m.id); else suggest(); });
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-id]");
+  if(b){ open(b.dataset.id); return; }
+  const g = e.target.closest("[data-go]");
+  if(g){ $(g.dataset.go).scrollIntoView({behavior: smooth(), block: "start"}); return; }
+  if(!e.target.closest("#form")) $("suggest").hidden = true;
+});
+
+const banks = [...new Set(CARDS.map(c => c.bank))];
+$("bar").textContent = `Offers and card terms last verified ${VERIFIED}. Re-checked every week`;
+$("tagline").textContent = `${CARDS.length} Indian credit cards across ${banks.length} banks`;
+$("popular").innerHTML = ["sbi-cashback","hdfc-millennia","icici-amazon","axis-ace"].map(id => `<button type="button" data-id="${id}">${full(byId[id])}</button>`).join("");
+$("stats").innerHTML = [[CARDS.length,"credit cards covered"],[banks.length,"banks and issuers"],[CARDS.filter(c => c.change).length,"cards with a recent change flagged"],[7,"days between re-checks"]]
+  .map(([n,l]) => `<div class="stat"><b>${n}</b><span>${l}</span></div>`).join("");
+$("banks").innerHTML = banks.map(b => `<div class="bank"><h3>${b}</h3>${CARDS.filter(c => c.bank === b).map(c => `<button type="button" data-id="${c.id}">${c.name}<span>${c.fee}</span></button>`).join("")}</div>`).join("");
+render(byId["hdfc-regalia-gold"], true);
+</script>
+</body>
+</html>
